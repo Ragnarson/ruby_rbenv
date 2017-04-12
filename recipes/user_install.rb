@@ -28,7 +28,7 @@ template '/etc/profile.d/rbenv.sh' do
   only_if { node['rbenv']['create_profiled'] }
 end
 
-Array(node['rbenv']['user_installs']).each do |rb_user|
+node['rbenv']['user_installs'].each do |rb_user|
   if rb_user['home'].nil?
     next unless ::File.exist?(File.join(node['rbenv']['user_home_root'], rb_user['user']))
   else

@@ -19,7 +19,13 @@
 
 include_recipe 'ruby_rbenv::user_install'
 
-Array(node['rbenv']['user_installs']).each do |rbenv_user|
+node['rbenv']['user_installs'].each do |rbenv_user|
+  puts rbenv_user
+  puts rbenv_user['home'].nil?
+  puts node['rbenv']['user_home_root']
+  puts rbenv_user['user']
+  puts "---"
+
   if rbenv_user['home'].nil?
     next unless ::File.exist?(File.join(node['rbenv']['user_home_root'], rbenv_user['user']))
   else
@@ -38,7 +44,11 @@ Array(node['rbenv']['user_installs']).each do |rbenv_user|
     end
   end
 
+  puts rubies
+  puts "---"
+
   rubies.each do |rubie|
+    puts "#{rubie} (#{rbenv_user['user']})"
     if rubie.is_a?(Hash)
       rbenv_ruby "#{rubie['name']} (#{rbenv_user['user']})" do
         definition rubie['name']
